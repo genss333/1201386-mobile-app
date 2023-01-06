@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/constants/app_constants.dart';
 
 void main() => runApp(const MyApp());
 
@@ -56,7 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
         appBar: AppBar(
           leading: const Icon(Icons.menu),
-          title: const Text('Counter App'),
+          title: const Text(APP_TITLE),
           actions: [
             IconButton(
               icon: const Icon(Icons.restore),
@@ -70,7 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               const Text(
-                'You have pushed the button this many times',
+                BODY_DETAIL,
                 style: TextStyle(
                   color: Colors.black45,
                   fontSize: 16,
