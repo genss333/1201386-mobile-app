@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/components/popup_menu.dart';
 import 'package:flutter_app/constants/app_constants.dart';
 
-void main() => runApp(const MyApp());
+void main() {
+  runApp(const MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -10,100 +13,59 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      darkTheme: ThemeData.dark(),
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+        primarySwatch: Colors.cyan,
       ),
-      home: const MyHomePage(),
+      home: const MyHomeScreen(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
+class MyHomeScreen extends StatefulWidget {
+  const MyHomeScreen({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<MyHomeScreen> createState() => _MyHomeScreenState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
-  void _decrementCounter() {
-    setState(() {
-      if (_counter > 0) {
-        _counter--;
-      } else {
-        _counter = 0;
-      }
-    });
-  }
-
-  void _resetCounter() {
-    setState(() {
-      _counter = 0;
-    });
-  }
-
+class _MyHomeScreenState extends State<MyHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          leading: const Icon(Icons.menu),
-          title: const Text(APP_TITLE),
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.restore),
-              tooltip: 'Reset',
-              onPressed: _resetCounter,
-            ),
-          ],
-        ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              const Text(
-                BODY_DETAIL,
-                style: TextStyle(
-                  color: Colors.black45,
-                  fontSize: 16,
-                ),
-              ),
-              const SizedBox(height: 10),
-              Text(
-                '$_counter',
-                style: const TextStyle(
-                  color: Colors.blue,
-                  fontSize: 80.0,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+      appBar: AppBar(
+        leading: const Icon(Icons.home),
+        title: const Text(
+          APP_TITLE,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 35,
+            fontFamily: 'Rowdies',
+            letterSpacing: 1.5,
+            shadows: [
+              Shadow(
+                color: Colors.redAccent,
+                offset: Offset(1.0, 3.0),
+              )
             ],
           ),
         ),
-        floatingActionButton: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: <Widget>[
-            FloatingActionButton(
-              onPressed: _decrementCounter,
-              tooltip: 'Decrement',
-              child: const Icon(Icons.remove),
+        actions: const [
+          PopUpMenuButtonComponent(),
+        ],
+      ),
+      body: const Center(
+        child: Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Text(
+            BODY_DETAIL,
+            style: TextStyle(
+              color: Colors.cyan,
+              fontSize: 35,
+              fontFamily: 'Rowdies',
             ),
-            const SizedBox(width: 10),
-            FloatingActionButton(
-              onPressed: _incrementCounter,
-              tooltip: 'Increment',
-              child: const Icon(Icons.add),
-            ),
-          ],
-        ));
+          ),
+        ),
+      ),
+    );
   }
 }

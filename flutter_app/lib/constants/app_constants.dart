@@ -1,4 +1,6 @@
 // ignore_for_file: constant_identifier_names
 
-const String APP_TITLE = 'Counter App';
-const String BODY_DETAIL = 'You have pushed the button this many times';
+const String APP_TITLE = 'App 01';
+const String BODY_DETAIL = 'Moblie Application For Android';
+const String SCREEN1_TITLE = 'Screen 01';
+const String SCREEN2_TITLE = 'Screen 02';
