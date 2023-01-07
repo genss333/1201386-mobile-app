@@ -18,7 +18,10 @@ class _PopUpMenuButtonComponentState extends State<PopUpMenuButtonComponent> {
         setState(() {
           menuName = value.toString();
           if (menuName == "0") {
-          } else {}
+            Navigator.pushNamed(context, 'screen01');
+          } else {
+            Navigator.pushNamed(context, 'screen02');
+          }
         });
       },
       initialValue: 2,

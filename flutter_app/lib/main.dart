@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/components/popup_menu.dart';
 import 'package:flutter_app/constants/app_constants.dart';
+import 'package:flutter_app/routes.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,6 +18,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.cyan,
       ),
       home: const MyHomeScreen(),
+      routes: routesApp,
     );
   }
 }
