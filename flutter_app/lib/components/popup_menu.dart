@@ -6,7 +6,7 @@ class PopUpMenuButtonComponent extends StatefulWidget {
     required this.onSelected,
   });
 
-  final Function(int vale) onSelected;
+  final Function(int value) onSelected;
 
   @override
   State<PopUpMenuButtonComponent> createState() =>
