@@ -38,7 +38,14 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: const Icon(Icons.home),
+        leading: InkWell(
+          onTap: () {
+            setState(() {
+              menuName = '';
+            });
+          },
+          child: const Icon(Icons.home),
+        ),
         title: const Text(
           APP_TITLE,
           style: TextStyle(
@@ -60,15 +67,16 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
       ),
       body: Center(
         child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Text(
-              menuName.isEmpty ? BODY_DETAIL : menuName,
-              style: const TextStyle(
-                color: Colors.cyan,
-                fontSize: 35,
-                fontFamily: 'Rowdies',
-              ),
-            )),
+          padding: const EdgeInsets.all(16.0),
+          child: Text(
+            menuName.isEmpty ? BODY_DETAIL : menuName,
+            style: const TextStyle(
+              color: Colors.cyan,
+              fontSize: 35,
+              fontFamily: 'Rowdies',
+            ),
+          ),
+        ),
       ),
     );
   }
