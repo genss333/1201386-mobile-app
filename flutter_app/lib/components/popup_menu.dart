@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 
 class PopUpMenuButtonComponent extends StatefulWidget {
-  const PopUpMenuButtonComponent({super.key});
+  const PopUpMenuButtonComponent({
+    super.key,
+    required this.onSelected,
+  });
+
+  final Function(int vale) onSelected;
 
   @override
   State<PopUpMenuButtonComponent> createState() =>
@@ -9,20 +14,11 @@ class PopUpMenuButtonComponent extends StatefulWidget {
 }
 
 class _PopUpMenuButtonComponentState extends State<PopUpMenuButtonComponent> {
-  String menuName = "";
-
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton(
       onSelected: (value) {
-        setState(() {
-          menuName = value.toString();
-          if (menuName == "0") {
-            Navigator.pushNamed(context, 'screen01');
-          } else {
-            Navigator.pushNamed(context, 'screen02');
-          }
-        });
+        widget.onSelected(value);
       },
       initialValue: 2,
       child: const Center(

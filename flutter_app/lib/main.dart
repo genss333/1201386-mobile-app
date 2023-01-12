@@ -31,6 +31,9 @@ class MyHomeScreen extends StatefulWidget {
 }
 
 class _MyHomeScreenState extends State<MyHomeScreen> {
+  String menuName = '';
+  int value = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,23 +54,29 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
             ],
           ),
         ),
-        actions: const [
-          PopUpMenuButtonComponent(),
+        actions: [
+          PopUpMenuButtonComponent(onSelected: _onSelected),
         ],
       ),
-      body: const Center(
+      body: Center(
         child: Padding(
-          padding: EdgeInsets.all(16.0),
-          child: Text(
-            BODY_DETAIL,
-            style: TextStyle(
-              color: Colors.cyan,
-              fontSize: 35,
-              fontFamily: 'Rowdies',
-            ),
-          ),
-        ),
+            padding: const EdgeInsets.all(16.0),
+            child: Text(
+              menuName.isEmpty ? BODY_DETAIL : menuName,
+              style: const TextStyle(
+                color: Colors.cyan,
+                fontSize: 35,
+                fontFamily: 'Rowdies',
+              ),
+            )),
       ),
     );
+  }
+
+  void _onSelected(int value) {
+    setState(() {
+      menuName = 'screen ${value + 1}';
+      //Navigator.pushNamed(context, 'screen ${value + 1}');
+    });
   }
 }
