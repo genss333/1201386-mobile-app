@@ -16,6 +16,13 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.cyan,
+        pageTransitionsTheme: const PageTransitionsTheme(
+          builders: {
+            TargetPlatform.android: CupertinoPageTransitionsBuilder(),
+            TargetPlatform.iOS: FadeUpwardsPageTransitionsBuilder(),
+            TargetPlatform.macOS: FadeUpwardsPageTransitionsBuilder(),
+          },
+        ),
       ),
       home: const MyHomeScreen(),
       routes: routesApp,
@@ -32,7 +39,6 @@ class MyHomeScreen extends StatefulWidget {
 
 class _MyHomeScreenState extends State<MyHomeScreen> {
   String menuName = '';
-  int value = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -83,8 +89,8 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
 
   void _onSelected(int value) {
     setState(() {
-      menuName = 'screen ${value + 1}';
-      //Navigator.pushNamed(context, 'screen ${value + 1}');
+      //menuName = 'screen ${value + 1}';
+      Navigator.pushNamed(context, 'screen ${value + 1}');
     });
   }
 }
