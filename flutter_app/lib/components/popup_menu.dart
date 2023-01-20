@@ -20,7 +20,6 @@ class _PopUpMenuButtonComponentState extends State<PopUpMenuButtonComponent> {
       onSelected: (value) {
         widget.onSelected(value);
       },
-      initialValue: 2,
       child: const Center(
         child: Icon(
           Icons.more_vert,
@@ -28,15 +27,68 @@ class _PopUpMenuButtonComponentState extends State<PopUpMenuButtonComponent> {
         ),
       ),
       itemBuilder: (context) {
-        return List.generate(
-          2,
-          (index) {
-            return PopupMenuItem(
-              value: index,
-              child: Text('screen ${index + 1}'),
-            );
-          },
-        );
+        return <PopupMenuEntry>[
+          PopupMenuItem(
+            value: 1,
+            child: Row(
+              children: const [
+                Icon(
+                  Icons.emoji_emotions,
+                  color: Colors.red,
+                ),
+                SizedBox(
+                  width: 4,
+                ),
+                Text('Icon'),
+              ],
+            ),
+          ),
+          PopupMenuItem(
+            value: 2,
+            child: Row(
+              children: const [
+                Icon(
+                  Icons.abc,
+                  color: Colors.blue,
+                ),
+                SizedBox(
+                  width: 4,
+                ),
+                Text('Text'),
+              ],
+            ),
+          ),
+          PopupMenuItem(
+            value: 3,
+            child: Row(
+              children: const [
+                Icon(
+                  Icons.girl,
+                  color: Colors.green,
+                ),
+                SizedBox(
+                  width: 4,
+                ),
+                Text('girl'),
+              ],
+            ),
+          ),
+          PopupMenuItem(
+            value: 4,
+            child: Row(
+              children: const [
+                Icon(
+                  Icons.man,
+                  color: Colors.pink,
+                ),
+                SizedBox(
+                  width: 4,
+                ),
+                Text('man'),
+              ],
+            ),
+          ),
+        ];
       },
     );
   }
