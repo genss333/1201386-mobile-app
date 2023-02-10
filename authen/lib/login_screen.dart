@@ -1,15 +1,15 @@
 import 'package:authen/validation.dart';
 import 'package:flutter/material.dart';
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key, required this.title});
   final String title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _LoginScreenState extends State<LoginScreen> {
   // create TextEditingController
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -23,11 +23,23 @@ class _MyHomePageState extends State<MyHomePage> {
 
   bool _isObscure = true;
 
+  final _email = [
+    'test@gmail.com',
+    'dd@gmail.com',
+    '123@gmail.com',
+  ];
+
+  final _password = [
+    '123456',
+    '1234567',
+    '12345678',
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: const Icon(Icons.home),
+        leading: const Icon(Icons.lock),
         title: Text(widget.title),
       ),
       body: Padding(
@@ -109,19 +121,59 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _onSubmit() {
     if (_formKey.currentState!.validate()) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Login Success'),
-        ),
-      );
-      _emailController.clear();
-      _passwordController.clear();
-      _emailFocusNode.unfocus();
-      _passwordFocusNode.unfocus();
+      bool correct = false;
+      for (var i = 0; i < _email.length; i++) {
+        if (_emailController.text == _email[i] &&
+            _passwordController.text == _password[i]) {
+          correct = true;
+          break;
+        }
+      }
+
+      if (correct) {
+        _buildAlertDialog(context, correct);
+      } else {
+        _buildAlertDialog(context, correct);
+      }
+
+      // _clear();
     } else if (_emailController.text.isEmpty) {
       FocusScope.of(context).requestFocus(_emailFocusNode);
     } else if (_passwordController.text.isEmpty) {
       FocusScope.of(context).requestFocus(_passwordFocusNode);
     }
+  }
+
+  void _clear() {
+    _emailController.clear();
+    _passwordController.clear();
+    _emailFocusNode.unfocus();
+    _passwordFocusNode.unfocus();
+  }
+
+  void _buildAlertDialog(BuildContext context, bool correct) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: correct ? Colors.green : Colors.red,
+          titleTextStyle: const TextStyle(color: Colors.white),
+          contentTextStyle: const TextStyle(color: Colors.white),
+          title: Text(correct ? 'Login Success' : 'Login Fail'),
+          content: Text(correct ? 'Welcome to my app' : 'Please try again'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text(
+                'OK',
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          ],
+        );
+      },
+    );
   }
 }

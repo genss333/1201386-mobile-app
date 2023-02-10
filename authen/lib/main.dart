@@ -1,4 +1,4 @@
-import 'package:authen/home_screen.dart';
+import 'package:authen/login_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.red,
       ),
-      home: const MyHomePage(title: 'Authentication Demo'),
+      home: const LoginScreen(title: 'Authentication Demo'),
       debugShowCheckedModeBanner: false,
     );
   }

@@ -5,8 +5,6 @@ String? validatorEmail(String? value) {
       r'^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$');
   if (value == null || value.isEmpty) {
     return 'Please enter your email';
-  }else if(regex.hasMatch(value) == false){
-    return 'Email is not valid';
   }
   return null;
 }
