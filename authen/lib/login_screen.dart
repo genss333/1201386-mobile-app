@@ -1,21 +1,22 @@
 import 'package:authen/validation.dart';
 import 'package:flutter/material.dart';
 
+import 'home_screen.dart';
+
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key, required this.title});
-  final String title;
+  const LoginScreen({super.key});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  // create GlobalKey
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   // create TextEditingController
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
-  // create GlobalKey
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   //create FocusNode
   final FocusNode _emailFocusNode = FocusNode();
@@ -24,7 +25,7 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _isObscure = true;
 
   final _email = [
-    'test@gmail.com',
+    'test',
     'dd@gmail.com',
     '123@gmail.com',
   ];
@@ -40,7 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       appBar: AppBar(
         leading: const Icon(Icons.lock),
-        title: Text(widget.title),
+        title: const Text('Authentication App'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -50,7 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
             children: <Widget>[
               const Icon(
                 Icons.food_bank_rounded,
-                size: 100,
+                size: 150,
                 color: Colors.amber,
               ),
               const SizedBox(height: 16.0),
@@ -129,14 +130,23 @@ class _LoginScreenState extends State<LoginScreen> {
           break;
         }
       }
-
       if (correct) {
-        _buildAlertDialog(context, correct);
+        _buildAlertDialog(
+                context, correct, 'Login Sucess', 'Welcome to My Application')
+            .then(
+          (value) {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (context) => const HomeScreen(),
+              ),
+            );
+          },
+        );
       } else {
-        _buildAlertDialog(context, correct);
+        _buildAlertDialog(context, correct, 'Login Fail', 'Please try again');
       }
-
-      // _clear();
+      _formKey.currentState!.reset();
+      _clear();
     } else if (_emailController.text.isEmpty) {
       FocusScope.of(context).requestFocus(_emailFocusNode);
     } else if (_passwordController.text.isEmpty) {
@@ -151,16 +161,17 @@ class _LoginScreenState extends State<LoginScreen> {
     _passwordFocusNode.unfocus();
   }
 
-  void _buildAlertDialog(BuildContext context, bool correct) {
-    showDialog(
+  Future<void> _buildAlertDialog(
+      BuildContext context, bool correct, String title, String content) async {
+    return showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
           backgroundColor: correct ? Colors.green : Colors.red,
           titleTextStyle: const TextStyle(color: Colors.white),
           contentTextStyle: const TextStyle(color: Colors.white),
-          title: Text(correct ? 'Login Success' : 'Login Fail'),
-          content: Text(correct ? 'Welcome to my app' : 'Please try again'),
+          title: Text(title),
+          content: Text(content),
           actions: [
             TextButton(
               onPressed: () {

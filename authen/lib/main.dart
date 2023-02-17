@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.red,
       ),
-      home: const LoginScreen(title: 'Authentication Demo'),
+      home: const LoginScreen(),
       debugShowCheckedModeBanner: false,
     );
   }
