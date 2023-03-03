@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:gensshop/screens/home/home_screen.dart';
 import 'package:gensshop/themes/app_themes.dart';
+
+import 'routes/routes.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,9 +17,10 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'GensShop',
+      title: 'final project',
       theme: getThemeFromKey(darkModeOn ? 'dark' : 'light'),
-      home: const HomeScreen(),
+      initialRoute: '/',
+      routes: routes,
     );
   }
 }

@@ -21,6 +21,7 @@ ThemeData lightTheme = ThemeData(
     titleTextStyle: TextStyle(
       color: Colors.black,
       fontSize: 20,
+      fontFamily: 'Atomed',
       fontWeight: FontWeight.bold,
     ),
     actionsIconTheme: IconThemeData(color: Colors.black),
@@ -61,6 +62,7 @@ ThemeData darkTheme = ThemeData(
     ),
     titleTextStyle: TextStyle(
       color: Colors.white,
+      fontFamily: 'Atomed',
       fontSize: 20,
       fontWeight: FontWeight.bold,
     ),
