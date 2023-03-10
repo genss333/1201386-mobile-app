@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 
 class PopUpMenuButtonComponent extends StatefulWidget {
-  const PopUpMenuButtonComponent({super.key});
+  const PopUpMenuButtonComponent({
+    super.key,
+    required this.onSelected,
+  });
+
+  final Function(int value) onSelected;
 
   @override
   State<PopUpMenuButtonComponent> createState() =>
@@ -9,22 +14,12 @@ class PopUpMenuButtonComponent extends StatefulWidget {
 }
 
 class _PopUpMenuButtonComponentState extends State<PopUpMenuButtonComponent> {
-  String menuName = "";
-
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton(
       onSelected: (value) {
-        setState(() {
-          menuName = value.toString();
-          if (menuName == "0") {
-            Navigator.pushNamed(context, 'screen01');
-          } else {
-            Navigator.pushNamed(context, 'screen02');
-          }
-        });
+        widget.onSelected(value);
       },
-      initialValue: 2,
       child: const Center(
         child: Icon(
           Icons.more_vert,
@@ -32,15 +27,68 @@ class _PopUpMenuButtonComponentState extends State<PopUpMenuButtonComponent> {
         ),
       ),
       itemBuilder: (context) {
-        return List.generate(
-          2,
-          (index) {
-            return PopupMenuItem(
-              value: index,
-              child: Text('screen ${index + 1}'),
-            );
-          },
-        );
+        return <PopupMenuEntry>[
+          PopupMenuItem(
+            value: 1,
+            child: Row(
+              children: const [
+                Icon(
+                  Icons.emoji_emotions,
+                  color: Colors.red,
+                ),
+                SizedBox(
+                  width: 4,
+                ),
+                Text('Icon'),
+              ],
+            ),
+          ),
+          PopupMenuItem(
+            value: 2,
+            child: Row(
+              children: const [
+                Icon(
+                  Icons.abc,
+                  color: Colors.blue,
+                ),
+                SizedBox(
+                  width: 4,
+                ),
+                Text('Text'),
+              ],
+            ),
+          ),
+          PopupMenuItem(
+            value: 3,
+            child: Row(
+              children: const [
+                Icon(
+                  Icons.girl,
+                  color: Colors.green,
+                ),
+                SizedBox(
+                  width: 4,
+                ),
+                Text('girl'),
+              ],
+            ),
+          ),
+          PopupMenuItem(
+            value: 4,
+            child: Row(
+              children: const [
+                Icon(
+                  Icons.man,
+                  color: Colors.pink,
+                ),
+                SizedBox(
+                  width: 4,
+                ),
+                Text('man'),
+              ],
+            ),
+          ),
+        ];
       },
     );
   }
