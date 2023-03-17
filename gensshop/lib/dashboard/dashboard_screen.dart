@@ -35,16 +35,16 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
       bottomNavigationBar: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
+            icon: Icon(Icons.food_bank),
+            label: 'อาหาร',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_cart),
-            label: 'cart',
+            icon: Icon(Icons.local_drink),
+            label: 'เครื่องดื่ม',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
+            icon: Icon(Icons.list_alt),
+            label: 'รายการสั่งซื้อ',
           ),
         ],
         currentIndex: _selectedIndex,
