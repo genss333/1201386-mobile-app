@@ -1,6 +1,10 @@
 import 'dart:async';
+import 'dart:convert' as convert;
 
 import 'package:flutter/material.dart';
+import 'package:gensshop/app_constants.dart';
+import 'package:gensshop/model/order_model.dart';
+import 'package:http/http.dart' as http;
 import 'package:passcode_screen/circle.dart';
 import 'package:passcode_screen/keyboard.dart';
 import 'package:passcode_screen/passcode_screen.dart';
@@ -17,25 +21,56 @@ class _Screen03State extends State<Screen03> {
       StreamController<bool>.broadcast();
   final storedPasscode = '123456';
 
-  bool isAuthenticated = false;
+  late List<GetOrder> _listOrder = [];
+
+  bool isAuthenticated = true;
+
+  void getAPI() async {
+    try {
+      var url = Uri.http(HOST, '/orderwherecust_id', {'cust_id': '13622'});
+      var response = await http.get(url, headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      });
+      if (response.statusCode == 200) {
+        GetOrder gorder = GetOrder.fromJson(convert.jsonDecode(response.body));
+        setState(() {
+          _listOrder = 
+        });
+      } else {
+        debugPrint('Request failed with status: ${response.statusCode}.');
+        throw Exception('Failed to load Data');
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  } //getAPI
 
   @override
   void initState() {
-    Future.delayed(const Duration(seconds: 1)).then((value) => showPassCode());
+    //Future.delayed(const Duration(seconds: 1)).then((value) => showPassCode());
+    getAPI();
     super.initState();
   }
 
   @override
   void dispose() {
-    _verificationNotifier.close();
+    // _verificationNotifier.close();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     if (isAuthenticated) {
-      return const Center(
-        child: Text('ยินดีต้อนรับ'),
+      return ListView.builder(
+        itemCount: _listOrder.length,
+        itemBuilder: (context, index) {
+          return const Card(
+            child: ListTile(
+              leading: Icon(Icons.album),
+          ),
+          );
+        },
       );
     }
     return const Center(

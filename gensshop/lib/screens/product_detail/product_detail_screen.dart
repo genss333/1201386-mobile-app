@@ -1,5 +1,9 @@
+import 'dart:convert' as convert;
+
 import 'package:flutter/material.dart';
+import 'package:gensshop/app_constants.dart';
 import 'package:gensshop/data.dart';
+import 'package:http/http.dart' as http;
 
 class ProductDetailScreen extends StatefulWidget {
   const ProductDetailScreen({
@@ -41,7 +45,42 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   int quantity = 1;
 
   //write to local storage
-  Future<void> addToCart() async {}
+  Future<void> addToCart(Map<String, dynamic> values) async {
+    try {
+      var url = Uri.http(HOST, '/order/add');
+
+      var response = await http.post(url,
+          headers: {'Content-Type': 'application/json'},
+          body: convert.jsonEncode(values));
+      if (response.statusCode == 200) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              backgroundColor: Colors.green,
+              title: const Text('Add to Cart'),
+              content: const Text(
+                'Add to Cart Success!!',
+                style: TextStyle(color: Colors.white),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
+      } else {
+        debugPrint('Insert not Success!!');
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
 
   @override
   void initState() {
@@ -174,8 +213,12 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         padding: const EdgeInsets.all(16.0),
         child: FloatingActionButton.extended(
           onPressed: () {
-            addToCart();
-            Navigator.pop(context);
+            Map<String, dynamic> values = {};
+            values['cust_id'] = "13622";
+            values['product_name'] = productDetail[0]['name'];
+            values['product_source'] = productDetail[0]['name'];
+            values['order_num'] = quantity;
+            addToCart(values);
           },
           label: const Text('Add to Cart'),
           icon: const Icon(Icons.shopping_cart),
