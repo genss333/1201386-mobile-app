@@ -1,41 +1,62 @@
-class GetOrder {
-  List<Data>? data;
+// To parse this JSON data, do
+//
+//     final orderModel = orderModelFromJson(jsonString);
 
-  GetOrder({this.data});
+import 'dart:convert';
 
-  GetOrder.fromJson(Map<String, dynamic> json) {
-    if (json['Data'] != null) {
-      data = <Data>[];
-      json['Data'].forEach((v) {
-        data!.add(Data.fromJson(v));
-      });
-    }
-  }
+OrderModel orderModelFromJson(String str) =>
+    OrderModel.fromJson(json.decode(str));
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    if (this.data != null) {
-      data['Data'] = this.data!.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
+String orderModelToJson(OrderModel data) => json.encode(data.toJson());
+
+class OrderModel {
+  OrderModel({
+    this.data,
+  });
+
+  final List<Data>? data;
+
+  factory OrderModel.fromJson(Map<String, dynamic> json) => OrderModel(
+        data: json["Data"] == null
+            ? []
+            : List<Data>.from(json["Data"]!.map((x) => Data.fromJson(x))),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "Data": data == null
+            ? []
+            : List<dynamic>.from(data!.map((x) => x.toJson())),
+      };
 }
 
 class Data {
-  int? orderno;
-  String? productname;
+  Data({
+    this.orderNo,
+    this.productName,
+    this.productSource,
+    this.orderNum,
+    this.custId,
+  });
 
-  Data({this.orderno, this.productname});
+  final int? orderNo;
+  final String? productName;
+  final String? productSource;
+  final int? orderNum;
+  final String? custId;
 
-  Data.fromJson(Map<String, dynamic> json) {
-    orderno = json['orderno'];
-    productname = json['productname'];
-  }
+  factory Data.fromJson(Map<String, dynamic> json) => Data(
+        orderNo: json["order_no"],
+        productName: json["product_name"],
+        productSource: json["product_source"],
+        orderNum: json["order_num"],
+        custId: json["cust_id"],
+      );
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['orderno'] = orderno;
-    data['productname'] = productname;
-    return data;
-  }
+  Map<String, dynamic> toJson() => {
+        "order_no": orderNo,
+        "product_name": productName,
+        "product_source": productSource,
+        "order_num": orderNum,
+        "cust_id": custId,
+      };
 }

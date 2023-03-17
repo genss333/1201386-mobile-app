@@ -21,24 +21,27 @@ class _Screen03State extends State<Screen03> {
       StreamController<bool>.broadcast();
   final storedPasscode = '123456';
 
-  late List<GetOrder> _listOrder = [];
+  bool isAuthenticated = false;
 
-  bool isAuthenticated = true;
+  late List<Data>? listOrder = [];
 
   void getAPI() async {
     try {
       var url = Uri.http(HOST, '/orderwherecust_id', {'cust_id': '13622'});
+
       var response = await http.get(url, headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
       });
+
       if (response.statusCode == 200) {
-        GetOrder gorder = GetOrder.fromJson(convert.jsonDecode(response.body));
+        OrderModel gorder =
+            OrderModel.fromJson(convert.jsonDecode(response.body));
+
         setState(() {
-          _listOrder = 
+          listOrder = gorder.data;
         });
       } else {
-        debugPrint('Request failed with status: ${response.statusCode}.');
         throw Exception('Failed to load Data');
       }
     } catch (e) {
@@ -48,14 +51,14 @@ class _Screen03State extends State<Screen03> {
 
   @override
   void initState() {
-    //Future.delayed(const Duration(seconds: 1)).then((value) => showPassCode());
     getAPI();
+    Future.delayed(const Duration(seconds: 1)).then((value) => showPassCode());
     super.initState();
   }
 
   @override
   void dispose() {
-    // _verificationNotifier.close();
+    _verificationNotifier.close();
     super.dispose();
   }
 
@@ -63,19 +66,23 @@ class _Screen03State extends State<Screen03> {
   Widget build(BuildContext context) {
     if (isAuthenticated) {
       return ListView.builder(
-        itemCount: _listOrder.length,
+        itemCount: listOrder!.length,
         itemBuilder: (context, index) {
-          return const Card(
+          Data? order = listOrder![index];
+          return Card(
             child: ListTile(
-              leading: Icon(Icons.album),
-          ),
+              leading: const Icon(Icons.shopping_cart),
+              title: Text(order.productName.toString()),
+              subtitle: Text("${order.orderNum} ชิ้น"),
+            ),
           );
         },
       );
+    } else {
+      return const Center(
+        child: Text("Please enter passcode"),
+      );
     }
-    return const Center(
-      child: Text('กรุณาล็อกอินก่อนทำการซื้อสินค้า'),
-    );
   }
 
   Future<void> showPassCode() {

@@ -19,9 +19,9 @@ const order = {
       }
     });
   },
-  getOrderByOrderNo: (req, res) => {
-    let sql = "select * from tbd_order where order_no = ?";
-    let data = req.query.orderno;
+  getOrderByCustId: (req, res) => {
+    let sql = "select * from tbd_order where cust_id = ?";
+    let data = req.params.cust_id;
     db.query(sql, data, (err, results) => {
       if (err) {
         console.log(err);
@@ -91,7 +91,7 @@ const order = {
 
   deleteOrder: (req, res) => {
     let sql = "delete from tbd_order where order_no = ?";
-    let id = req.params.id;
+    let id = req.body.order_no;
 
     db.query(sql, id, (err) => {
       if (err) {

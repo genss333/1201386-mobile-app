@@ -12,8 +12,6 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(express.json());
 
-app.use(bodyParser.json());
-
 // start server
 app.listen(3000, () => {
   console.log("Server running port 3000");
@@ -21,21 +19,7 @@ app.listen(3000, () => {
 
 // สร้าง API สำหรับเรียกข้อมูล Order
 app.get("/order", order.getOrderList);
-app.get('/orderwherecust_id',function(req,res){
-  // รับค่าผ่าน form get
-  let custid = req.query.cust_id
-  // ติดต่อ db
-  let sql = 'SELECT * From tbd_order WHERE cust_id=?'
-  db.query(sql, custid, (err, results, fields) => {
-      if (err) {
-          res.status(500).json({
-              'status': 500,
-              'message': 'ไม่พบข้อมูล :' + err.sqlMessage
-          });
-      } else {
-              let rs= {'Data': results};
-      res.json(rs);
-      }
-  })
-})
+app.get("/order/:cust_id", order.getOrderByCustId);
 app.post("/order/add", order.addOrder);
+app.delete("/order/delete", order.deleteOrder);
+app.put("/order/update/:order_no", order.updateOrder);
