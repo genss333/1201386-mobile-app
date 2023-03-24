@@ -68,6 +68,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).pop();
+                    Navigator.of(context).pop();
                   },
                   child: const Text('OK'),
                 ),
@@ -219,19 +220,40 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
       ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: FloatingActionButton.extended(
-          onPressed: () {
-            Map<String, dynamic> values = {};
-            values['cust_id'] = "13622";
-            values['product_name'] = productDetail[0]['name'];
-            values['product_source'] = productDetail[0]['image'];
-            values['order_num'] = quantity;
-            values['product_type'] = widget.type;
-            addToCart(values);
-          },
-          label: Text(
-              'Add to Cart ${total == 0 ? productDetail[0]['price'] : total} ฿'),
-          icon: const Icon(Icons.shopping_cart),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SizedBox(
+              width: 250,
+              child: FloatingActionButton.extended(
+                onPressed: () {
+                  Map<String, dynamic> values = {};
+                  values['cust_id'] = "13622";
+                  values['product_name'] = productDetail[0]['name'];
+                  values['product_source'] = productDetail[0]['image'];
+                  values['order_num'] = quantity;
+                  values['product_price'] =
+                      total == 0 ? productDetail[0]['price'] : total;
+                  addToCart(values);
+                },
+                label: Text(
+                    'Add to Cart ${total == 0 ? productDetail[0]['price'] : total} ฿'),
+                icon: const Icon(Icons.shopping_cart),
+              ),
+            ),
+            SizedBox(height: 20.0),
+            SizedBox(
+              width: 250,
+              child: FloatingActionButton.extended(
+                backgroundColor: Colors.red,
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                label: Text('Cancle'),
+                icon: const Icon(Icons.cancel),
+              ),
+            ),
+          ],
         ),
       ),
     );

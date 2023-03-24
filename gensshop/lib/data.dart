@@ -3,7 +3,7 @@ final foodList = [
     'id': '1',
     'name': 'แฮมเบอเกอร์',
     'image': 'images/foods/hamburger.png',
-    'price': 10.0,
+    'price': 35.0,
   },
   {
     'id': '2',

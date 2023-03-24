@@ -20,7 +20,7 @@ const order = {
     });
   },
   getOrderByCustId: (req, res) => {
-    let sql = "select `order_no`,`product_name`,`product_source`,`cust_id`, SUM(order_num) order_num,product_type FROM tbd_order where cust_id = ? GROUP BY product_name";
+    let sql = "select `order_no`,`product_name`,`product_source`,`cust_id`, SUM(order_num)order_num, SUM(product_price) product_price FROM tbd_order where cust_id = ? GROUP BY product_name";
     let data = req.query.cust_id;
     db.query(sql, data, (err, results) => {
       if (err) {
@@ -39,6 +39,7 @@ const order = {
     });
   },
 
+
   addOrder: (req, res) => {
     let sql = "insert into tbd_order set ?";
     let data = {
@@ -46,7 +47,7 @@ const order = {
       product_name: req.body.product_name,
       product_source: req.body.product_source,
       order_num: req.body.order_num,
-      product_type: req.body.product_type,
+      product_price: req.body.product_price,
     };
     db.query(sql, data, (err) => {
       if (err) {
@@ -88,10 +89,10 @@ const order = {
   },
 
   deleteOrder: (req, res) => {
-    let sql = "delete from tbd_order where order_no = ?";
-    let id = req.body.order_no;
+    let sql = "delete from tbd_order where product_name = ?";
+    let product_name = req.query.product_name;
 
-    db.query(sql, id, (err) => {
+    db.query(sql, product_name, (err) => {
       if (err) {
         res.status(500).json({
           status: 500,

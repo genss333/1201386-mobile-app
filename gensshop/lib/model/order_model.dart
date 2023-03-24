@@ -31,7 +31,7 @@ class Data {
   String? productSource;
   int? orderNum;
   String? custId;
-  String? productType;
+  int? productPrice;
 
   Data({
     this.orderNo,
@@ -39,7 +39,7 @@ class Data {
     this.productSource,
     this.orderNum,
     this.custId,
-    this.productType,
+    this.productPrice,
   });
 
   Data.fromJson(Map<String, dynamic> json) {
@@ -48,7 +48,7 @@ class Data {
     productSource = json['product_source'];
     orderNum = json['order_num'];
     custId = json['cust_id'];
-    productType = json['product_type'];
+    productPrice = json['product_price'];
   }
 
   Map<String, dynamic> toJson() {
@@ -58,7 +58,7 @@ class Data {
     data['product_source'] = productSource;
     data['order_num'] = orderNum;
     data['cust_id'] = custId;
-    data['product_type'] = productType;
+    data['product_price'] = productPrice;
     return data;
   }
 }

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:gensshop/screens/screen-01/screen01.dart';
 import 'package:gensshop/screens/screen-02/screen02.dart';
 import 'package:gensshop/screens/screen-03/screen03.dart';
+import 'package:gensshop/screens/verify/employee.dart';
 import 'package:passcode_screen/circle.dart';
 import 'package:passcode_screen/keyboard.dart';
 import 'package:passcode_screen/passcode_screen.dart';
@@ -25,6 +26,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
   bool isAuthenticated = false;
 
   _onTabItem(int index) {
+    showPassCode();
     setState(() {
       _selectedIndex = index;
     });
@@ -32,9 +34,6 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
 
   @override
   void initState() {
-    Future.delayed(Duration.zero, () {
-      showPassCode();
-    });
     super.initState();
   }
 
@@ -54,9 +53,22 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Gens Shop'),
+        title: Text(isAuthenticated ? 'Gens Shop' : 'บริการอื่นๆ'),
+        actions: [
+          if (isAuthenticated)
+            IconButton(
+              icon: const Icon(Icons.logout),
+              onPressed: () {
+                setState(() {
+                  isAuthenticated = false;
+                });
+              },
+            )
+        ],
       ),
-      body: widgetOptions.elementAt(_selectedIndex),
+      body: isAuthenticated
+          ? widgetOptions.elementAt(_selectedIndex)
+          : const Employee(),
       bottomNavigationBar: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(
@@ -79,15 +91,18 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
   }
 
   Future<void> showPassCode() {
-    return _showLockScreen(
-      context,
-      opaque: false,
-      cancelButton: const Text(
-        'Cancel',
-        style: TextStyle(fontSize: 16, color: Colors.white),
-        semanticsLabel: 'Cancel',
-      ),
-    );
+    if (isAuthenticated == false) {
+      return _showLockScreen(
+        context,
+        opaque: false,
+        cancelButton: const Text(
+          'Cancel',
+          style: TextStyle(fontSize: 16, color: Colors.white),
+          semanticsLabel: 'Cancel',
+        ),
+      );
+    }
+    return Future.value();
   }
 
   _showLockScreen(

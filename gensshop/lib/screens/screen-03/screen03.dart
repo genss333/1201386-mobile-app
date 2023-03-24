@@ -2,7 +2,6 @@ import 'dart:convert' as convert;
 
 import 'package:flutter/material.dart';
 import 'package:gensshop/app_constants.dart';
-import 'package:gensshop/data.dart';
 import 'package:gensshop/model/order_model.dart';
 import 'package:http/http.dart' as http;
 
@@ -40,6 +39,47 @@ class _Screen03State extends State<Screen03> {
     }
   } //getAPI
 
+  deleteAPI(String product_name) async {
+    try {
+      var url =
+          Uri.http(HOST, '/order/delete', {'product_name': '$product_name'});
+
+      var response = await http.delete(url, headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      });
+
+      if (response.statusCode == 200) {
+        // ignore: use_build_context_synchronously
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              backgroundColor: Colors.green,
+              title: const Text('Delete Order'),
+              content: const Text(
+                'Delete Order Success!!',
+                style: TextStyle(color: Colors.white),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
+      } else {
+        debugPrint('Delete not Success!!');
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
+
   @override
   void initState() {
     getAPI();
@@ -56,32 +96,28 @@ class _Screen03State extends State<Screen03> {
         itemCount: listOrder!.length,
         itemBuilder: (context, index) {
           Data? order = listOrder![index];
-          double price = 0.0;
-          if (order.productType == 'food') {
-            for (var element in foodList) {
-              if (element['name'] == order.productName) {
-                price = double.parse(element['price'].toString()) *
-                    double.parse(order.orderNum.toString());
-              }
-            }
-          } else {
-            for (var element in localDrinkList) {
-              if (element['name'] == order.productName) {
-                price = double.parse(element['price'].toString()) *
-                    double.parse(order.orderNum.toString());
-              }
-            }
-          }
           return Card(
             child: ListTile(
-              leading: Image.asset(order.productSource.toString()),
-              title: Text(order.productName.toString()),
-              subtitle: Text("${order.orderNum} ชิ้น"),
-              trailing: Text("${price.toStringAsFixed(2)} บาท"),
-            ),
+                leading: Image.asset(order.productSource.toString()),
+                title: Text(order.productName.toString()),
+                subtitle: Text(
+                  "${order.orderNum} ชิ้น ${order.productPrice} บาท",
+                ),
+                trailing: IconButton(
+                  icon: Icon(
+                    Icons.delete,
+                    color: Colors.red,
+                  ),
+                  onPressed: () => _onDelete(order.productName.toString()),
+                )),
           );
         },
       ),
     );
+  }
+
+  _onDelete(String product_name) async {
+    await deleteAPI(product_name);
+    getAPI();
   }
 }
