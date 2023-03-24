@@ -43,7 +43,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   }
 
   int quantity = 1;
-
+  double total = 0.0;
   //write to local storage
   Future<void> addToCart(Map<String, dynamic> values) async {
     try {
@@ -53,6 +53,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
           headers: {'Content-Type': 'application/json'},
           body: convert.jsonEncode(values));
       if (response.statusCode == 200) {
+        // ignore: use_build_context_synchronously
         showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -80,6 +81,11 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     } catch (e) {
       debugPrint(e.toString());
     }
+  }
+
+  void sumTotal() {
+    total = productDetail[0]['price'] * quantity;
+    debugPrint('total = $total');
   }
 
   @override
@@ -172,6 +178,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                         quantity--;
                                       }
                                     });
+                                    sumTotal();
                                   },
                                   child: const Icon(
                                     Icons.remove,
@@ -190,6 +197,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                     setState(() {
                                       quantity++;
                                     });
+                                    sumTotal();
                                   },
                                   child: const Icon(
                                     Icons.add,
@@ -216,11 +224,13 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
             Map<String, dynamic> values = {};
             values['cust_id'] = "13622";
             values['product_name'] = productDetail[0]['name'];
-            values['product_source'] = productDetail[0]['name'];
+            values['product_source'] = productDetail[0]['image'];
             values['order_num'] = quantity;
+            values['product_type'] = widget.type;
             addToCart(values);
           },
-          label: const Text('Add to Cart'),
+          label: Text(
+              'Add to Cart ${total == 0 ? productDetail[0]['price'] : total} ฿'),
           icon: const Icon(Icons.shopping_cart),
         ),
       ),

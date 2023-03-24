@@ -20,8 +20,8 @@ const order = {
     });
   },
   getOrderByCustId: (req, res) => {
-    let sql = "select * from tbd_order where cust_id = ?";
-    let data = req.params.cust_id;
+    let sql = "select `order_no`,`product_name`,`product_source`,`cust_id`, SUM(order_num) order_num,product_type FROM tbd_order where cust_id = ? GROUP BY product_name";
+    let data = req.query.cust_id;
     db.query(sql, data, (err, results) => {
       if (err) {
         console.log(err);
@@ -33,7 +33,7 @@ const order = {
         res.json({
           status: true,
           data: results,
-          message: "Order List",
+          message: "Order List By Cust Id",
         });
       }
     });
@@ -46,6 +46,7 @@ const order = {
       product_name: req.body.product_name,
       product_source: req.body.product_source,
       order_num: req.body.order_num,
+      product_type: req.body.product_type,
     };
     db.query(sql, data, (err) => {
       if (err) {
@@ -64,16 +65,13 @@ const order = {
   },
 
   updateOrder: (req, res) => {
-    let sql = "update tbd_order set ? where order_no = ?";
+    let sql = "UPDATE `tbd_order` SET `order_num` = ? WHERE `tbd_order`.`order_no` = ?";
     let data = {
-      cust_id: req.body.cust_id,
-      product_name: req.body.product_name,
-      product_source: req.body.product_source,
       order_num: req.body.order_num,
     }
-    let id = req.params.id;
+    let id = req.query.order_no;
     
-    db.query(sql, [data, id], (err) => {
+    db.query(sql, [data,id], (err) => {
       if (err) {
         res.status(500).json({
           status: 500,
